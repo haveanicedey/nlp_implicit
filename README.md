@@ -42,7 +42,6 @@ The commands currently being used are
 
 #### Source Code
 
-Client Side
+Client Side -> index.ejs and Server Side -> app.js
 * [index.ejs](views/pages/index.ejs)
-Server Side
 * [app.js](app.js)
