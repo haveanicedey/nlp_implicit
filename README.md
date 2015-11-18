@@ -39,3 +39,10 @@ The commands currently being used are
 'I want (to) (listen to) (any) (some) *term (music) (songs)':                process_query,
 'I would like (to) (listen to) (any) (some) *term (music) (songs)':          process_query,
 ```
+
+#### Source Code
+
+Client Side
+* [index.ejs](views/pages/index.ejs)
+Server Side
+* [app.js](app.js)
