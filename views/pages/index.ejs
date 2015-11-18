@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Moodbox NLP Test</title>
+  <meta name="description" content="Testing NLP - Implicit Functions" />
+  <script src="js/annyang.min.js"></script>
+  <script src="js/jquery-1.11.3.min.js"></script>
+  <script>
+  "use strict";
+
+  // first we make sure annyang started succesfully
+  if (annyang) {
+
+    // define the functions our commands will run
+    var process_query = function(term) {
+
+      $.post("/evaluate",{ 'term': term}, function(data) {
+        var adjective = data.adjective;
+        var noun = data.noun;
+        document.getElementById("hello").innerHTML = "Phrase being analyzed: " + term + "; Keywords: " + adjective + " (adjective), " + noun + " (noun)";
+        $("#hello").slideDown("slow");
+        scrollTo("#section_hello");
+      });
+
+    };
+
+    // defining implicit commands
+    var commands = {
+      'I am feeling *term':                                                        process_query,
+      'I feel *term':                                                              process_query,
+      'I am *term':                                                                process_query,
+      'I was *term':                                                               process_query,
+      'I want *term':                                                              process_query,
+      'I need *term':                                                              process_query,
+      'I will be *term play (me) (something)':                                     process_query,
+      'I am *term play (me) (something)':                                          process_query,
+      'I need to *term play (me) (something)':                                     process_query,
+      'I need (some) (music) (songs) to *term':                                    process_query,
+      '(Can you) (Will you) (Please) Play (some) (music) (songs) for *term':       process_query,
+      '(Can you) (Will you) (Please) Play (me) (any) *term (music) (songs)':       process_query,
+      'I (will) like (any) (to listen to) (some) *term (music) (songs)':           process_query,
+      'I feel like (any) (some) *term (music) (songs)':                            process_query,
+      'I feel like listening to (any) (some) *term (music) (songs)':               process_query,
+      'I want (to) (listen to) (any) (some) *term (music) (songs)':                process_query,
+      'I would like (to) (listen to) (any) (some) *term (music) (songs)':          process_query,
+    };
+
+    // OPTIONAL: activate debug mode for detailed logging in the console
+    annyang.debug();
+
+    // Add voice commands to respond to
+    annyang.addCommands(commands);
+
+    // OPTIONAL: Set a language for speech recognition (defaults to English)
+    // For a full list of language codes, see the documentation:
+    // https://github.com/TalAter/annyang/blob/master/docs/README.md#languages
+    annyang.setLanguage('en');
+
+    // Start listening. You can call this here, or attach this call to an event, button, etc.
+    annyang.start();
+  } else {
+    $(document).ready(function() {
+      $('#unsupported').fadeIn('fast');
+    });
+  }
+
+  var scrollTo = function(identifier, speed) {
+    $('html, body').animate({
+        scrollTop: $(identifier).offset().top
+    }, speed || 1000);
+  }
+  </script>
+  <link rel="stylesheet" href="css/main.css" />
+</head>
+<body>
+  <section id="section_header">
+    <h1><em>Moodbox</em> Test Voice Commands</h1>
+    <img src="images/icon_user.png">
+    <img src="images/icon_speech.png">
+    <img src="images/icon_js.png">
+  </section>
+  <section id="section_hello">
+    <p><em>Go ahead, try it&hellip;</em></p>
+    <p id="hello" class="hidden">Annyang!</p>
+  </section>
+  <div id="unsupported" class="hidden">
+    <h4>It looks like your browser doesn't support speech recognition.</h4>
+    <p>annyang plays nicely with all browsers, progressively enhancing modern browsers that support the SpeechRecognition standard, while leaving users with older browsers unaffected.</p>
+    <p>Please visit <a href="http://www.annyangjs.com/">http://www.annyangjs.com/</a> in a desktop browser like Chrome.</p>
+  </div>
+  <script src="js/highlight.pack.js"></script>
+  <script>
+    hljs.initHighlightingOnLoad();
+  </script>
+</body>
+</html>
